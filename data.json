@@ -1,0 +1,149 @@
+{
+  "airports": [{
+    "airportId":"SFO",
+    "name": "San Francisco International Airport",
+    "city": "San Francisco",
+    "state": "CA",
+    "connections": [
+      {"airportId": "LAX",
+        "cost": 99,
+        "miles": 337,
+        "duration": 1.5
+      },{
+        "airportId": "DFW",
+          "cost": 350,
+          "miles": 1464,
+          "duration": 4
+      },{
+        "airportId": "ORD",
+          "cost": 425,
+          "miles": 1846,
+          "duration": 4.25
+      },{
+        "airportId": "BOS",
+          "cost": 550,
+          "miles": 2704,
+          "duration": 6
+      }]
+    },{
+      "airportId":"LAX",
+      "name": "Los Angeles International Airport",
+      "city": "Los Angeles",
+      "state": "CA",
+      "connections":[
+        {"airportId": "SFO",
+          "cost": 99,
+          "miles": 337,
+          "duration": 1.5
+        },{
+          "airportId": "DFW",
+          "cost": 225,
+          "miles": 1235,
+          "duration": 3
+        },{
+          "airportId": "MIA",
+          "cost": 500,
+          "miles": 2342,
+          "duration": 5
+        }]
+      },{
+        "airportId":"DFW",
+        "name": "Dallas/Fort Worth International Airport",
+        "city": "Dallas",
+        "state": "TX",
+        "connections":[
+          {"airportId": "LAX",
+            "cost": 225,
+            "miles": 1235,
+            "duration": 3
+        },{
+            "airportId": "SFO",
+            "cost": 500,
+            "miles": 1464,
+            "duration": 4
+        },{
+            "airportId": "ORD",
+            "cost": 175,
+            "miles": 802,
+            "duration": 2.25
+        },{
+            "airportId": "MIA",
+            "cost": 210,
+            "miles": 1121,
+            "duration": 3
+          }]
+      },{
+        "airportId":"ORD",
+        "name": "O'Hare International Airport",
+        "city": "Chicago",
+        "state": "IL",
+        "connections":[
+          {"airportId": "SFO",
+            "cost": 425,
+            "miles": 1846,
+            "duration": 4.25
+          },{
+            "airportId": "DFW",
+            "cost": 175,
+            "miles": 802,
+            "duration": 2.25
+          },{
+            "airportId": "BOS",
+            "cost": 175,
+            "miles": 867,
+            "duration": 2.5
+          },{
+            "airportId": "JFK",
+            "cost": 150,
+            "miles": 740,
+            "duration": 2.5
+          }]
+      },{
+        "airportId":"BOS",
+        "name": "Logan International Airport",
+        "city": "Boston",
+        "state": "MA",
+        "connections":[
+          {"airportId": "SFO",
+            "cost": 550,
+            "miles": 2704,
+            "duration": 6
+          },{
+            "airportId": "JFK",
+            "cost": 99,
+            "miles": 187,
+            "duration": 1.25
+          },{
+            "airportId": "MIA",
+            "cost": 250,
+            "miles": 1258,
+            "duration": 3.5
+          }
+        ]
+      },{
+        "airportId":"JFK",
+        "name": "John F. Kennedy International Airport",
+        "city": "New York City",
+        "state": "NY",
+        "connections":[
+          {"airportId": "",
+            "cost": ,
+            "miles": ,
+            "duration":
+        },
+        ]
+      },{
+        "airportId":"MIA",
+        "name": "Miami International Airport",
+        "city": "Miami",
+        "state": "FL",
+        "connections":[
+          {"airportId": "",
+            "cost": ,
+            "miles": ,
+            "duration":
+        },
+        ]
+        }
+    ]
+}

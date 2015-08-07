@@ -126,11 +126,22 @@
         "city": "New York City",
         "state": "NY",
         "connections":[
-          {"airportId": "",
-            "cost": ,
-            "miles": ,
-            "duration":
-        },
+          {
+            "airportId": "ORD",
+            "cost": 150,
+            "miles": 740,
+            "duration": 3.5
+          },{
+            "airportId": "MIA",
+            "cost": 200,
+            "miles": 1090,
+            "duration": 3
+          },{
+            "airportId": "BOS",
+            "cost": 99,
+            "miles": 187,
+            "duration": 1.25
+          }
         ]
       },{
         "airportId":"MIA",
@@ -138,12 +149,28 @@
         "city": "Miami",
         "state": "FL",
         "connections":[
-          {"airportId": "",
-            "cost": ,
-            "miles": ,
-            "duration":
-        },
+          {
+            "airportId": "BOS",
+            "cost": 250,
+            "miles": 1258,
+            "duration": 3.5
+          },{
+            "airportId": "JFK",
+            "cost": 200,
+            "miles": 1090,
+            "duration": 3
+          },{
+            "airportId": "DFW",
+            "cost": 210,
+            "miles": 1121,
+            "duration": 3
+          },{
+            "airportId": "LAX",
+            "cost": 500,
+            "miles": 2342,
+            "duration": 5
+          }
         ]
-        }
+      }
     ]
 }

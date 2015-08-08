@@ -3,15 +3,17 @@ var Graph = require('node-dijkstra');
 
 var graph = new Graph();
 
-data.airports.forEach(function(airport){
-  graph.addVertex(airport.airportId, function(){
-    var connectionObj = {};
-    airport.connections.forEach(function(connection){
-      connectionObj[connection.airportId] = connection.cost;
+var setGraph = function(){
+  data.airports.forEach(function(airport){
+    graph.addVertex(airport.airportId, function(){
+      var connectionObj = {};
+      airport.connections.forEach(function(connection){
+        connectionObj[connection.airportId] = connection.cost;
+      });
+      return connectionObj;
     });
-    return connectionObj;
   });
-});
+};
 
 var getItinerary = function(departAirportId, destinationAirportId){
   var itinerary = [];
@@ -24,7 +26,13 @@ var getDepartAirportIndex = function(airportId){
 };
 
 var getDestinationAirportIndex = function(destId, departIndex){
-  return data.airports[departIndex].connections.map(function(airport){return airport.airportId}).indexOf(destId);
+  if(departIndex === -1){
+    return -1;
+  } else {
+  var connectioningAirports = data.airports[departIndex].connections;
+
+  return connectionsAirports.map(function(airport){return airport.airportId}).indexOf(destId);
+  }
 };
 
 var getFlightCost = function(itinerary){
@@ -77,12 +85,19 @@ var findFlightDuration = function(departIndex, destinationIndex){
 
 var searchResults = function(depart, destination){
   var flightResultsObj = {};
-  flightResultsObj.itinerary = getItinerary(depart, destination);
-  flightResultsObj.cost = getFlightCost(flightResultsObj.itinerary);
-  flightResultsObj.miles = getFlightMiles(flightResultsObj.itinerary);
-  flightResultsObj.duration = getFlightDuration(flightResultsObj.itinerary);
+  setGraph();
 
-  return flightResultsObj;
+  //check that depart and destination are in data set
+  if(!getDepartAirportIndex(depart) || !getDestinationAirportIndex(getDepartAirportIndex(depart), destination)){
+    return flightResultsObj;
+  } else {
+    flightResultsObj.itinerary = getItinerary(depart, destination);
+    flightResultsObj.cost = getFlightCost(flightResultsObj.itinerary);
+    flightResultsObj.miles = getFlightMiles(flightResultsObj.itinerary);
+    flightResultsObj.duration = getFlightDuration(flightResultsObj.itinerary);
+
+    return flightResultsObj;
+  }
 };
 
-module.exports = searchResults;
+module.exports = searchResults();

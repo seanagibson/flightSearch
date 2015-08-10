@@ -14,7 +14,7 @@ app.get('/search', function(req, res){
   var depart = req.query.departId;
   var destination = req.query.destId;
 
-  flightResults = flightSearch.searchResults(depart, destination);
+  flightResults = flightSearch(depart, destination);
 
   if(flightResults.itinerary.length === 0){
     res.status(500);

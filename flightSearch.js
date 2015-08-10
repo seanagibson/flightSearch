@@ -5,18 +5,25 @@ var graph = new Graph();
 
 var setGraph = function(){
   data.airports.forEach(function(airport){
-    graph.addVertex(airport.airportId, function(){
       var connectionObj = {};
       airport.connections.forEach(function(connection){
         connectionObj[connection.airportId] = connection.cost;
       });
-      return connectionObj;
-    });
+      graph.addVertex(airport.airportId, connectionObj);
   });
+};
+
+var checkAirport = function(airportId){
+  if(data.airports.map(function(airport){return airport.airportId}).indexOf(airportId) === -1){
+    return false;
+  } else {
+    return true;
+  }
 };
 
 var getItinerary = function(departAirportId, destinationAirportId){
   var itinerary = [];
+
   itinerary = graph.shortestPath(departAirportId, destinationAirportId);
   return itinerary;
 };
@@ -29,9 +36,7 @@ var getDestinationAirportIndex = function(destId, departIndex){
   if(departIndex === -1){
     return -1;
   } else {
-  var connectioningAirports = data.airports[departIndex].connections;
-
-  return connectionsAirports.map(function(airport){return airport.airportId}).indexOf(destId);
+  return data.airports[departIndex].connections.map(function(airport){return airport.airportId}).indexOf(destId);
   }
 };
 
@@ -88,7 +93,7 @@ var searchResults = function(depart, destination){
   setGraph();
 
   //check that depart and destination are in data set
-  if(!getDepartAirportIndex(depart) || !getDestinationAirportIndex(getDepartAirportIndex(depart), destination)){
+  if(!checkAirport(depart) || !checkAirport(destination)){
     return flightResultsObj;
   } else {
     flightResultsObj.itinerary = getItinerary(depart, destination);
@@ -100,4 +105,4 @@ var searchResults = function(depart, destination){
   }
 };
 
-module.exports = searchResults();
+module.exports = searchResults;

@@ -1,108 +1,98 @@
 var data = require('./data.json');
-var Graph = require('node-dijkstra');
+var GraphSearch = require('./graph-search');
+var graphSearch = new GraphSearch();
+graphSearch.addVertices();
 
-var graph = new Graph();
+function FlightSearch(){
 
-var setGraph = function(){
-  data.airports.forEach(function(airport){
-      var connectionObj = {};
-      airport.connections.forEach(function(connection){
-        connectionObj[connection.airportId] = connection.cost;
-      });
-      graph.addVertex(airport.airportId, connectionObj);
-  });
-};
+  var checkAirport = function(airportId){
+    if(data.airports.map(function(airport){return airport.airportId}).indexOf(airportId) === -1){
+      return false;
+    } else {
+      return true;
+    }
+  };
 
-var checkAirport = function(airportId){
-  if(data.airports.map(function(airport){return airport.airportId}).indexOf(airportId) === -1){
-    return false;
-  } else {
-    return true;
-  }
-};
+  var getItinerary = function(departAirportId, destinationAirportId){
+    var itinerary = [];
+    itinerary = graphSearch.getShortestPath(departAirportId, destinationAirportId);
+    return itinerary;
+  };
 
-var getItinerary = function(departAirportId, destinationAirportId){
-  var itinerary = [];
+  var getDepartAirportIndex = function(airportId){
+    return data.airports.map(function(airport){return airport.airportId}).indexOf(airportId);
+  };
 
-  itinerary = graph.shortestPath(departAirportId, destinationAirportId);
-  return itinerary;
-};
+  var getDestinationAirportIndex = function(destId, departIndex){
+    if(departIndex === -1){
+      return -1;
+    } else {
+      return data.airports[departIndex].connections.map(function(airport){return airport.airportId}).indexOf(destId);
+    }
+  };
 
-var getDepartAirportIndex = function(airportId){
-  return data.airports.map(function(airport){return airport.airportId}).indexOf(airportId);
-};
+  var getFlightCost = function(itinerary){
+    var flightCost = 0;
 
-var getDestinationAirportIndex = function(destId, departIndex){
-  if(departIndex === -1){
-    return -1;
-  } else {
-  return data.airports[departIndex].connections.map(function(airport){return airport.airportId}).indexOf(destId);
-  }
-};
+    for(var airportCount = 0; airportCount < itinerary.length - 1; airportCount++){
+      var departIndex = getDepartAirportIndex(itinerary[airportCount]);
+      var destinationIndex = getDestinationAirportIndex(itinerary[airportCount + 1], departIndex);
 
-var getFlightCost = function(itinerary){
-  var flightCost = 0;
+      flightCost += findFlightCost(departIndex, destinationIndex);
+    }
+    return flightCost;
+  };
 
-  for(var airportCount = 0; airportCount < itinerary.length - 1; airportCount++){
-    var departIndex = getDepartAirportIndex(itinerary[airportCount]);
-    var destinationIndex = getDestinationAirportIndex(itinerary[airportCount + 1], departIndex);
+  var findFlightCost = function(departIndex, destinationIndex){
+    return data.airports[departIndex].connections[destinationIndex].cost;
+  };
 
-    flightCost += findFlightCost(departIndex, destinationIndex);
-  }
-  return flightCost;
-};
+  var getFlightMiles = function(itinerary){
+    var flightMiles = 0;
 
-var findFlightCost = function(departIndex, destinationIndex){
-  return data.airports[departIndex].connections[destinationIndex].cost;
-};
+    for(var airportCount = 0; airportCount < itinerary.length - 1; airportCount++){
+      var departIndex = getDepartAirportIndex(itinerary[airportCount]);
+      var destinationIndex = getDestinationAirportIndex(itinerary[airportCount + 1], departIndex);
 
-var getFlightMiles = function(itinerary){
-  var flightMiles = 0;
+      flightMiles += findFlightMiles(departIndex, destinationIndex);
+    }
+    return flightMiles;
+  };
 
-  for(var airportCount = 0; airportCount < itinerary.length - 1; airportCount++){
-    var departIndex = getDepartAirportIndex(itinerary[airportCount]);
-    var destinationIndex = getDestinationAirportIndex(itinerary[airportCount + 1], departIndex);
+  var findFlightMiles = function(departIndex, destinationIndex){
+    return data.airports[departIndex].connections[destinationIndex].miles;
+  };
 
-    flightMiles += findFlightMiles(departIndex, destinationIndex);
-  }
-  return flightMiles;
-};
+  var getFlightDuration = function(itinerary){
+    var flightDuration = 0;
 
-var findFlightMiles = function(departIndex, destinationIndex){
-  return data.airports[departIndex].connections[destinationIndex].miles;
-};
+    for(var airportCount = 0; airportCount < itinerary.length - 1; airportCount++){
+      var departIndex = getDepartAirportIndex(itinerary[airportCount]);
+      var destinationIndex = getDestinationAirportIndex(itinerary[airportCount + 1], departIndex);
 
-var getFlightDuration = function(itinerary){
-  var flightDuration = 0;
+      flightDuration += findFlightDuration(departIndex, destinationIndex);
+    }
+    return flightDuration;
+  };
 
-  for(var airportCount = 0; airportCount < itinerary.length - 1; airportCount++){
-    var departIndex = getDepartAirportIndex(itinerary[airportCount]);
-    var destinationIndex = getDestinationAirportIndex(itinerary[airportCount + 1], departIndex);
+  var findFlightDuration = function(departIndex, destinationIndex){
+    return data.airports[departIndex].connections[destinationIndex].duration;
+  };
 
-    flightDuration += findFlightDuration(departIndex, destinationIndex);
-  }
-  return flightDuration;
-};
+  this.searchResults = function(depart, destination){
+    var flightResultsObj = {};
 
-var findFlightDuration = function(departIndex, destinationIndex){
-  return data.airports[departIndex].connections[destinationIndex].duration;
-};
+    //check that depart and destination are in data set
+    if(!checkAirport(depart) || !checkAirport(destination)){
+      return flightResultsObj;
+    } else {
+      flightResultsObj.itinerary = getItinerary(depart, destination);
+      flightResultsObj.cost = getFlightCost(flightResultsObj.itinerary);
+      flightResultsObj.miles = getFlightMiles(flightResultsObj.itinerary);
+      flightResultsObj.duration = getFlightDuration(flightResultsObj.itinerary);
+      return flightResultsObj;
+    }
+  };
+}
 
-var searchResults = function(depart, destination){
-  var flightResultsObj = {};
-  setGraph();
-
-  //check that depart and destination are in data set
-  if(!checkAirport(depart) || !checkAirport(destination)){
-    return flightResultsObj;
-  } else {
-    flightResultsObj.itinerary = getItinerary(depart, destination);
-    flightResultsObj.cost = getFlightCost(flightResultsObj.itinerary);
-    flightResultsObj.miles = getFlightMiles(flightResultsObj.itinerary);
-    flightResultsObj.duration = getFlightDuration(flightResultsObj.itinerary);
-
-    return flightResultsObj;
-  }
-};
-
-module.exports = searchResults;
+module.exports = FlightSearch;

@@ -7,6 +7,8 @@ var airportData = new AirportData();
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/views'));
+app.use("/public", express.static(__dirname + '/public'));
+app.use("/build", express.static(__dirname + '/build'));
 
 app.get('/', function(req, res){
   res.sendFile('index.html');
@@ -25,7 +27,7 @@ app.get('/search', function(req, res){
 
   flightResults = flightSearch.searchResults(depart, destination);
 
-  if(flightResults.itinerary.length === 0){
+  if(typeof flightResults.itinerary === 'undefined'){
     res.status(500);
     res.render('error', 'Internal Error');
   } else {

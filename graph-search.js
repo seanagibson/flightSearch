@@ -1,8 +1,10 @@
 var data = require('./data.json');
 var Graph = require('node-dijkstra');
-var graph = new Graph();
+
 
 function GraphSearch() {
+  var graph = new Graph();
+
   this.addVertices = function(){
     data.airports.forEach(function(airport){
         var connectionObj = {};
@@ -12,6 +14,7 @@ function GraphSearch() {
         graph.addVertex(airport.airportId, connectionObj);
     });
   }
+  
   this.getShortestPath = function(departAirportId, destAirportId){
     return graph.shortestPath(departAirportId, destAirportId);
   }

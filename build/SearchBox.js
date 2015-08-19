@@ -1,116 +1,78 @@
 var SearchBox = React.createClass({displayName: "SearchBox",
   getInitialState: function(){
     return {
-      airportList: [],
+      options: [],
       costResults: {}
-  };
-},
+    };
+  },
 
   componentDidMount: function(){
-  var self = this;
-  $.get('/airports', function(result){
-    if(self.isMounted()){
-      self.setState({airportList: result});
+    $.get('/airports', function(results){
+      if(this.isMounted()){
+        this.handleOptions(results);
+      }
+    }.bind(this));
+  },
+
+  handleOptions: function(data){
+    var airportArray = data;
+    var optionsArray = [];
+    for(var i = 0; i < airportArray.length; i++){
+      optionsArray.push(
+        React.createElement("option", {key: i, value: airportArray[i].airportId}, airportArray[i].city)
+      );
     }
-  });
-},
+    this.setState({options: optionsArray});
+  },
 
   search: function(){
-  var selectedDepart = $('.departAirports').val();
-  var selectedDest = $('.destinationAirports').val();
-  var self = this;
-  $.get('/search', {departId: selectedDepart, destId: selectedDest}, function(result){
-    self.addSearchResults(result);
-  });
-},
+    var selectedDepart = $('.departAirports').val();
+    var selectedDest = $('.destinationAirports').val();
+
+    $.get('/search', {departId: selectedDepart, destId: selectedDest}, function(results){
+      this.addSearchResults(results);
+    }.bind(this));
+  },
 
   addSearchResults: function(results){
     var searchResultsObj = {};
     searchResultsObj = results;
     this.setState({costResults: searchResultsObj});
-},
-
-  generateOptions: function(){
-      return (
-        this.state.airportList.map(function(airport, i){
-          React.createElement("option", {key: i, value: "airport.airportId"}, 
-          airport.city)
-        })
-      );
-},
+  },
 
   render: function(){
-    if(this.state.airportList.length > 0){
-      return (
-        React.createElement("div", {className: "searchBox"}, 
-          React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
-                  React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("legend", null, "Depart Airport")
-                    ), 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("select", {className: "departAirports"}, this.generateOptions)
-                    )
-                  )
-                ), 
-                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
-                  React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("legend", null, "Destination Airport")
-                    ), 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("select", {className: "destinationAirports"}, this.generateOptions)
-                    )
-                )
-                ), 
-                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
-                  React.createElement("button", {className: "btn btn-primary", type: "submit", onClick: this.search}, "Get Route")
-                )
-          ), 
-          React.createElement("div", {id: "searchResults"}, 
-            React.createElement(SearchResults, {costResults: this.state.costResults})
-          )
-        )
-      );
-      } else {
-      return (
-        React.createElement("div", {className: "searchBox"}, 
-          React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
-                  React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("legend", null, "Depart Airport")
-                    ), 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("select", {className: "departAirports"}, 
-                        React.createElement("option", null)
-                      )
-                    )
-                  )
-                ), 
-                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
-                  React.createElement("div", {className: "row"}, 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("legend", null, "Destination Airport")
-                    ), 
-                    React.createElement("div", {className: "col-md-6"}, 
-                      React.createElement("select", {className: "destinationAirports"}, 
-                        React.createElement("option", null)
-                      )
-                    )
-                )
-                ), 
-                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
-                  React.createElement("button", {className: "btn btn-primary", type: "submit", onClick: this.search}, "Get Route")
-                )
-          ), 
-          React.createElement("div", {id: "searchResults"}, 
-            React.createElement(SearchResults, {costResults: this.state.costResults})
-          )
-        )
-      );
-      }
-}
 
+      return (
+        React.createElement("div", {className: "searchBox"}, 
+          React.createElement("div", {className: "row"}, 
+                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
+                  React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-md-6"}, 
+                      React.createElement("legend", null, "Depart Airport")
+                    ), 
+                    React.createElement("div", {className: "col-md-6"}, 
+                      React.createElement(AirportSelect, {className: "departAirports", options: this.state.options})
+                    )
+                  )
+                ), 
+                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
+                  React.createElement("div", {className: "row"}, 
+                    React.createElement("div", {className: "col-md-6"}, 
+                      React.createElement("legend", null, "Destination Airport")
+                    ), 
+                    React.createElement("div", {className: "col-md-6"}, 
+                      React.createElement(AirportSelect, {className: "destinationAirports", options: this.state.options})
+                    )
+                )
+                ), 
+                React.createElement("div", {className: "col-xs-12 col-md-4"}, 
+                  React.createElement("button", {className: "btn btn-primary", type: "submit", onClick: this.search}, "Get Route")
+                )
+          ), 
+          React.createElement("div", {id: "searchResults"}, 
+            React.createElement(SearchResults, {costResults: this.state.costResults})
+          )
+        )
+      );
+    }
 });

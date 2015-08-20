@@ -5,21 +5,43 @@
     <script src="https://code.jquery.com/jquery.min.js"></script>
 
     <!--Bootstrap-->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js">
-    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
     <!--React-->
     <script src="https://fb.me/react-0.13.3.min.js"></script>
 
+    <link href="/public/bootstrap-slate.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="/public/style.css" rel="stylesheet" type="text/css" />
+
     <title>Flight Search App</title>
 
     </script>
   </head>
   <body>
-    <div class="text-center">
-      <h1>Flight Search App</h1>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><i class="fa fa-plane fa-lg"></i> Flight Search</a>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/data">Flight Data</a></li>
+            <li><a href="https://github.com/seanagibson/flightSearch"><i class="fa fa-github fa-lg"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div>
+    <p></p>
+    <p></p>
+    <p></p>
     </div>
     <div id="app">
       <script src="/build/AirportSelect.js"></script>

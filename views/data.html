@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+
+    <!--Bootstrap-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="/public/bootstrap-slate.min.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link href="/public/style.css" rel="stylesheet" type="text/css" />
+
+    <title>Flight Search App</title>
+
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><i class="fa fa-plane fa-lg"></i> Flight Search</a>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/data">Flight Data</a></li>
+            <li><a href="https://github.com/seanagibson/flightSearch"><i class="fa fa-github fa-lg"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="data-table">
+      <p>The table below contains the mock data used in graph search.
+      </p>
+      <table class="table table-striped table-responsive">
+        <thead>
+          <tr>
+            <td>Depart Airport</td>
+            <td>Connecting Airport</td>
+            <td>Miles</td>
+            <td>Travel Time</td>
+            <td>Flight Cost</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="4">San Francisco</td>
+            <td>Los Angeles</td>
+            <td>337</td>
+            <td>1.5 hrs</td>
+            <td>$99</td>
+          </tr>
+          <tr>
+            <td>Dallas</td>
+            <td>1464</td>
+            <td>4 hrs</td>
+            <td>$350</td>
+          </tr>
+          <tr>
+            <td>Chicago</td>
+            <td>1846</td>
+            <td>4.25 hrs</td>
+            <td>$425</td>
+          </tr>
+          <tr>
+            <td>Boston</td>
+            <td>2704</td>
+            <td>6 hrs</td>
+            <td>$550</td>
+          </tr>
+          <tr>
+            <td rowspan="3">Los Angeles</td>
+            <td>San Francisco</td>
+            <td>337</td>
+            <td>1.5 hrs</td>
+            <td>$99</td>
+          </tr>
+          <tr>
+            <td>Dallas</td>
+            <td>1235</td>
+            <td>3 hrs</td>
+            <td>$225</td>
+          </tr>
+          <tr>
+            <td>Miami</td>
+            <td>2342</td>
+            <td>5 hrs</td>
+            <td>$500</td>
+          </tr>
+          <tr>
+            <td rowspan="4">Dallas</td>
+            <td>Los Angeles</td>
+            <td>1235</td>
+            <td>3 hrs</td>
+            <td>$225</td>
+          </tr>
+          <tr>
+            <td>San Francisco</td>
+            <td>1464</td>
+            <td>4 hrs</td>
+            <td>$500</td>
+          </tr>
+          <tr>
+            <td>Chicago</td>
+            <td>802</td>
+            <td>2.25 hrs</td>
+            <td>$175</td>
+          </tr>
+          <tr>
+            <td>Miami</td>
+            <td>1121</td>
+            <td>3 hrs</td>
+            <td>$210</td>
+          </tr>
+          <tr>
+            <td rowspan="4">Chicago</td>
+            <td>San Francisco</td>
+            <td>1846</td>
+            <td>4.25 hrs</td>
+            <td>$425</td>
+          </tr>
+          <tr>
+            <td>Dallas</td>
+            <td>802</td>
+            <td>2.25 hrs</td>
+            <td>$175</td>
+          </tr>
+          <tr>
+            <td>Boston</td>
+            <td>867</td>
+            <td>2.5 hrs</td>
+            <td>$175</td>
+          </tr>
+          <tr>
+            <td>New York City</td>
+            <td>740</td>
+            <td>2.5 hrs</td>
+            <td>$150</td>
+          </tr>
+          <tr>
+            <td rowspan="3">Boston</td>
+            <td>San Francisco</td>
+            <td>2704</td>
+            <td>6 hrs</td>
+            <td>$550</td>
+          </tr>
+          <tr>
+            <td>New York City</td>
+            <td>187</td>
+            <td>1.25 hrs</td>
+            <td>$99</td>
+          </tr>
+          <tr>
+            <td>Miami</td>
+            <td>1258</td>
+            <td>3.5 hrs</td>
+            <td>$250</td>
+          </tr>
+          <tr>
+            <td rowspan="3">New York City</td>
+            <td>Chicago</td>
+            <td>740</td>
+            <td>3.5 hrs</td>
+            <td>$150</td>
+          </tr>
+          <tr>
+            <td>Miami</td>
+            <td>1090</td>
+            <td>3 hrs</td>
+            <td>$200</td>
+          </tr>
+          <tr>
+            <td>Boston</td>
+            <td>187</td>
+            <td>1.25 hrs</td>
+            <td>$99</td>
+          </tr>
+          <tr>
+            <td rowspan="4">Miami</td>
+            <td>Boston</td>
+            <td>1258</td>
+            <td>3.5 hrs</td>
+            <td>$250</td>
+          </tr>
+          <tr>
+            <td>New York City</td>
+            <td>1090</td>
+            <td>3 hrs</td>
+            <td>$200</td>
+          </tr>
+          <tr>
+            <td>Dallas</td>
+            <td>1121</td>
+            <td>3 hrs</td>
+            <td>$210</td>
+          </tr>
+          <tr>
+            <td>Los Angeles</td>
+            <td>2342</td>
+            <td>5 hrs</td>
+            <td>$500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

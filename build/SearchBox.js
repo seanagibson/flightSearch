@@ -33,7 +33,7 @@ var SearchBox = React.createClass({displayName: "SearchBox",
     var selectedDest = $('.destinationAirports').val();
 
     if(selectedDepart == selectedDest){
-      this.setState({alertOn: !this.state.alertOn});
+      this.setState({alertOn: true});
     } else {
       this.setState({alertOn: false});
       $.get('/search', {departId: selectedDepart, destId: selectedDest}, function(results){
@@ -46,19 +46,6 @@ var SearchBox = React.createClass({displayName: "SearchBox",
     var searchResults = [];
     searchResults = results;
     this.setState({costResults: searchResults[0], milesResults: searchResults[1], durationResults: searchResults[2]});
-  },
-
-  handleAlert: function(){
-    if(this.state.alertOn){
-      return (
-        React.createElement("div", {className: "alert alert-dismissible alert-danger"}, 
-          React.createElement("button", {type: "button", class: "close", "data-dismiss": "alert"}, "×"), 
-          React.createElement("strong", null, "Error: Destination airport same as departing airport.")
-        )
-      );
-    } else {
-      return;
-    }
   },
 
   render: function(){
@@ -78,7 +65,9 @@ var SearchBox = React.createClass({displayName: "SearchBox",
                   React.createElement("button", {className: "btn btn-primary btn-block center-block", id: "search-btn", type: "submit", onClick: this.search}, "Search")
                 )
           ), 
-          React.createElement("div", {className: "alert"}, this.handleAlert), 
+          React.createElement("div", {className: "alert-container"}, 
+            React.createElement(AlertBox, {alertOn: this.state.alertOn})
+          ), 
           React.createElement("div", {id: "searchResults"}, 
             React.createElement(SearchResults, {costResults: this.state.costResults, milesResults: this.state.milesResults, durationResults: this.state.durationResults})
           )

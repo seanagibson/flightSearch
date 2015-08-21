@@ -33,7 +33,7 @@ var SearchBox = React.createClass({
     var selectedDest = $('.destinationAirports').val();
 
     if(selectedDepart == selectedDest){
-      this.setState({alertOn: !this.state.alertOn});
+      this.setState({alertOn: true});
     } else {
       this.setState({alertOn: false});
       $.get('/search', {departId: selectedDepart, destId: selectedDest}, function(results){
@@ -46,19 +46,6 @@ var SearchBox = React.createClass({
     var searchResults = [];
     searchResults = results;
     this.setState({costResults: searchResults[0], milesResults: searchResults[1], durationResults: searchResults[2]});
-  },
-
-  handleAlert: function(){
-    if(this.state.alertOn){
-      return (
-        <div className="alert alert-dismissible alert-danger">
-          <button type="button" class="close" data-dismiss="alert">×</button>
-          <strong>Error: Destination airport same as departing airport.</strong>
-        </div>
-      );
-    } else {
-      return;
-    }
   },
 
   render: function(){
@@ -78,7 +65,9 @@ var SearchBox = React.createClass({
                   <button className="btn btn-primary btn-block center-block" id="search-btn" type="submit" onClick={this.search}>Search</button>
                 </div>
           </div>
-          <div className="alert">{this.handleAlert}</div>
+          <div className="alert-container">
+            <AlertBox alertOn={this.state.alertOn} />
+          </div>
           <div id="searchResults">
             <SearchResults costResults={this.state.costResults} milesResults={this.state.milesResults} durationResults={this.state.durationResults}/>
           </div>

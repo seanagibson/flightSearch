@@ -17,3 +17,7 @@
 .table td{
   text-align: center;
 }
+
+.alert-container{
+  margin: 10px 10px 10px 10px;
+}

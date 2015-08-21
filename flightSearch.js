@@ -1,7 +1,7 @@
 var data = require('./data.json');
 var GraphSearch = require('./graph-search');
 var graphSearch = new GraphSearch();
-graphSearch.addVertices();
+
 
 function FlightSearch(){
 
@@ -13,7 +13,8 @@ function FlightSearch(){
     }
   };
 
-  var getItinerary = function(departAirportId, destinationAirportId){
+  var getItinerary = function(departAirportId, destinationAirportId, searchMethod){
+    graphSearch.addVertices(searchMethod);
     var itinerary = [];
     itinerary = graphSearch.getShortestPath(departAirportId, destinationAirportId);
     return itinerary;
@@ -79,18 +80,31 @@ function FlightSearch(){
     return data.airports[departIndex].connections[destinationIndex].duration;
   };
 
+  var getResults = function(depart, dest, searchMethods){
+    var resultObj = {};
+
+    resultObj.searchMethod = searchMethods;
+    resultObj.itinerary = getItinerary(depart, dest, searchMethods);
+    resultObj.cost = getFlightCost(resultObj.itinerary);
+    resultObj.miles = getFlightMiles(resultObj.itinerary);
+    resultObj.duration = getFlightDuration(resultObj.itinerary);
+    
+    return resultObj;
+
+  };
+
   this.searchResults = function(depart, destination){
-    var flightResultsObj = {};
+    var searchMethods = ['cost', 'miles', 'duration'];
+    var flightResultsArray = [];
 
     //check that depart and destination are in data set
     if(!checkAirport(depart) || !checkAirport(destination)){
-      return flightResultsObj;
+      return null;
     } else {
-      flightResultsObj.itinerary = getItinerary(depart, destination);
-      flightResultsObj.cost = getFlightCost(flightResultsObj.itinerary);
-      flightResultsObj.miles = getFlightMiles(flightResultsObj.itinerary);
-      flightResultsObj.duration = getFlightDuration(flightResultsObj.itinerary);
-      return flightResultsObj;
+        for(var index = 0; index < searchMethods.length; index++){
+          flightResultsArray.push(getResults(depart, destination, searchMethods[index]));
+        }
+      return flightResultsArray;
     }
   };
 }

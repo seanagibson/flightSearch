@@ -2,7 +2,10 @@ var SearchBox = React.createClass({
   getInitialState: function(){
     return {
       options: [],
-      costResults: {}
+      costResults: {},
+      milesResults: {},
+      durationResults: {},
+      alertOn: false
     };
   },
 
@@ -29,48 +32,55 @@ var SearchBox = React.createClass({
     var selectedDepart = $('.departAirports').val();
     var selectedDest = $('.destinationAirports').val();
 
-    $.get('/search', {departId: selectedDepart, destId: selectedDest}, function(results){
-      this.addSearchResults(results);
-    }.bind(this));
+    if(selectedDepart == selectedDest){
+      this.setState({alertOn: !this.state.alertOn});
+    } else {
+      this.setState({alertOn: false});
+      $.get('/search', {departId: selectedDepart, destId: selectedDest}, function(results){
+        this.addSearchResults(results);
+      }.bind(this));
+    }
   },
 
   addSearchResults: function(results){
-    var searchResultsObj = {};
-    searchResultsObj = results;
-    this.setState({costResults: searchResultsObj});
+    var searchResults = [];
+    searchResults = results;
+    this.setState({costResults: searchResults[0], milesResults: searchResults[1], durationResults: searchResults[2]});
+  },
+
+  handleAlert: function(){
+    if(this.state.alertOn){
+      return (
+        <div className="alert alert-dismissible alert-danger">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>Error: Destination airport same as departing airport.</strong>
+        </div>
+      );
+    } else {
+      return;
+    }
   },
 
   render: function(){
 
       return (
         <div className="searchBox">
-          <div className="row">
-                <div className="col-xs-12 col-md-4">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <legend>Depart Airport</legend>
-                    </div>
-                    <div className="col-md-6">
-                      <AirportSelect className="departAirports" options={this.state.options}/>
-                    </div>
-                  </div>
+          <div className="row" id="search-select-row">
+                <div className="col-xs-12 col-sm-5 col-md-4">
+                    <label for="select" className="control-label">Depart Airport</label>
+                    <AirportSelect className="departAirports form-control" options={this.state.options}/>
                 </div>
-                <div className="col-xs-12 col-md-4">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <legend>Destination Airport</legend>
-                    </div>
-                    <div className="col-md-6">
-                      <AirportSelect className="destinationAirports" options={this.state.options}/>
-                    </div>
+                <div className="col-xs-12 col-sm-5 col-md-4">
+                    <label for="select" className="control-label">Destination Airport</label>
+                    <AirportSelect className="destinationAirports form-control" options={this.state.options}/>
                 </div>
-                </div>
-                <div className="col-xs-12 col-md-4">
-                  <button className="btn btn-primary" type="submit" onClick={this.search}>Get Route</button>
+                <div className="col-xs-12 col-sm-2 col-md-3">
+                  <button className="btn btn-primary btn-block center-block" id="search-btn" type="submit" onClick={this.search}>Search</button>
                 </div>
           </div>
+          <div className="alert">{this.handleAlert}</div>
           <div id="searchResults">
-            <SearchResults costResults={this.state.costResults}/>
+            <SearchResults costResults={this.state.costResults} milesResults={this.state.milesResults} durationResults={this.state.durationResults}/>
           </div>
         </div>
       );

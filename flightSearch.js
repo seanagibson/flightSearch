@@ -1,9 +1,9 @@
 var data = require('./data.json');
 var GraphSearch = require('./graph-search');
-var graphSearch = new GraphSearch();
 
 
 function FlightSearch(){
+  var graphSearch = new GraphSearch();
 
   var checkAirport = function(airportId){
     if(data.airports.map(function(airport){return airport.airportId}).indexOf(airportId) === -1){
@@ -88,7 +88,7 @@ function FlightSearch(){
     resultObj.cost = getFlightCost(resultObj.itinerary);
     resultObj.miles = getFlightMiles(resultObj.itinerary);
     resultObj.duration = getFlightDuration(resultObj.itinerary);
-    
+
     return resultObj;
 
   };
@@ -101,9 +101,9 @@ function FlightSearch(){
     if(!checkAirport(depart) || !checkAirport(destination)){
       return null;
     } else {
-        for(var index = 0; index < searchMethods.length; index++){
-          flightResultsArray.push(getResults(depart, destination, searchMethods[index]));
-        }
+      searchMethods.forEach(function(method){
+        flightResultsArray.push(getResults(depart, destination, method));
+      });
       return flightResultsArray;
     }
   };

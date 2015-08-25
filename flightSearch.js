@@ -1,7 +1,6 @@
 var data = require('./data.json');
 var GraphSearch = require('./graph-search');
 
-
 function FlightSearch(){
   var graphSearch = new GraphSearch();
 

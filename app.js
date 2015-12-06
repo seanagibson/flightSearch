@@ -11,10 +11,6 @@ app.use("/data", express.static(__dirname + '/views/data.html'));
 app.use("/public", express.static(__dirname + '/public'));
 app.use("/build", express.static(__dirname + '/build'));
 
-app.get('/', function(req, res){
-  res.sendFile('index.html');
-});
-
 app.get('/airports', function(req, res){
   var airportArray = [];
   airportArray = airportData.getAirports();
